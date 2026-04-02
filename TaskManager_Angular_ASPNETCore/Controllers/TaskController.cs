@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceContracts;
 using ServiceContracts.DTOs.TaskDTOs;
 using Servicies;
@@ -7,6 +8,7 @@ namespace TaskManager_Angular_ASPNETCore.Controllers
 {
     [ApiController]
     [Route("api/tasks")]
+
     public class TaskController : ControllerBase
     {
 
