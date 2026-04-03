@@ -40,7 +40,7 @@ namespace Servicies
                 
                 new Claim(ClaimTypes.Email, user.Email ?? ""),
                 
-                new Claim(ClaimTypes.Name, user.PersonName ?? "")
+                new Claim("name", user.PersonName ?? "")
              };
             SymmetricSecurityKey symmetricSecurityKey = new
                 SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

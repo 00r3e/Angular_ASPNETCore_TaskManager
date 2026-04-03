@@ -117,8 +117,20 @@ namespace TaskManager_Angular_ASPNETCore.Controllers
         [HttpGet("logout")]
         public async Task<IActionResult> GetLogout()
         {
+            var email = User.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null)
+            {
+                user.RefreshToken = null;
+                user.RefreshTokenExpirationDateTime = null;
+
+                await _userManager.UpdateAsync(user);
+            }
+
             await _signInManager.SignOutAsync();
-            return Ok("Logged out successfully");
+
+            return Ok();
         }
 
         [HttpPost("generate-new-jwt-token")]
