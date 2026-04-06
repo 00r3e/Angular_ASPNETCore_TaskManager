@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ServiceContracts;
 using ServiceContracts.DTOs.TaskDTOs;
 using Servicies;
@@ -22,14 +25,16 @@ namespace TaskManager_Angular_ASPNETCore.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTasks()
         {
+            var userId = GetUserId();
 
-            var tasks = await _taskService.GetAllTasksAsync();
+            var tasks = await _taskService.GetAllTasksAsync(userId);
             return Ok(tasks);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetTask(int id)
         {
+
             var task = await _taskService.GetTaskAsync(id);
 
             if (task == null)
@@ -41,7 +46,9 @@ namespace TaskManager_Angular_ASPNETCore.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateTask(TaskAddRequest taskAddRequest)
         {
-            var task = await _taskService.CreateTaskAsync(taskAddRequest);
+            var userId = GetUserId();
+
+            var task = await _taskService.CreateTaskAsync(taskAddRequest, userId);
             return Ok(task);
         }
 
@@ -79,6 +86,18 @@ namespace TaskManager_Angular_ASPNETCore.Controllers
             var taskResponse = await _taskService.DeleteTaskAsync(id);
             if (taskResponse == -1) return NotFound();
             return NoContent();
+        }
+
+        private Guid GetUserId()
+        {
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!Guid.TryParse(userIdString, out var userId))
+            {
+                throw (new UnauthorizedAccessException("User ID not found in claims."));
+            }
+            return userId;
+            
         }
     }
 }

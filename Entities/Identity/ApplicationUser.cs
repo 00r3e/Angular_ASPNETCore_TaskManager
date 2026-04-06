@@ -14,5 +14,8 @@ namespace Entities.Identity
         public string? RefreshToken {get; set; }
 
         public DateTime? RefreshTokenExpirationDateTime { get; set; }
+
+        //NAVIGATION PROPERTY
+        public ICollection<TaskItem> Tasks { get; set; } = new List<TaskItem>();
     }
 }

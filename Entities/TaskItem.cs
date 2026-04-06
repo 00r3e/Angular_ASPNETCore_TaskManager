@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Entities.Identity;
 
 namespace Entities
 {
@@ -25,5 +26,11 @@ namespace Entities
         public string Status { get; set; } = "";
 
         public DateTime CreatedAt { get; set; }
+
+        //FOREIGN KEY
+        public Guid UserId { get; set; }
+
+        //NAVIGATION PROPERTY
+        public ApplicationUser User { get; set; }
     }
 }

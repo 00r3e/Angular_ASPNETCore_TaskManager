@@ -9,7 +9,7 @@ namespace RepositoryContracts
 {
     public interface ITaskRepository
     {
-        Task<List<TaskItem>> GetAllAsync();
+        Task<List<TaskItem>> GetAllAsync(Guid userId);
         Task<TaskItem?> GetByIdAsync(int id);
         Task<TaskItem> AddAsync(TaskItem task);
         Task<TaskItem?> UpdateAsync(int id, TaskItem task);

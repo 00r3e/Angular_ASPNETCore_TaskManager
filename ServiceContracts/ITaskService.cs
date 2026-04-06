@@ -10,9 +10,9 @@ namespace ServiceContracts
 {
     public interface ITaskservice
     {
-        Task<List<TaskResponse>> GetAllTasksAsync();
+        Task<List<TaskResponse>> GetAllTasksAsync(Guid userId);
         Task<TaskResponse?> GetTaskAsync(int id);
-        Task<TaskResponse> CreateTaskAsync(TaskAddRequest task);
+        Task<TaskResponse> CreateTaskAsync(TaskAddRequest task, Guid userId);
         Task<TaskResponse?> UpdateTaskAsync(int id, TaskUpdateRequest task);
         Task<int> DeleteTaskAsync(int id);
     }

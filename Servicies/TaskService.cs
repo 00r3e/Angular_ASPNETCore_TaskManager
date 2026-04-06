@@ -19,9 +19,9 @@ namespace Servicies
             _repository = repository;
         }
 
-        public async Task<List<TaskResponse>> GetAllTasksAsync()
+        public async Task<List<TaskResponse>> GetAllTasksAsync(Guid userId)
         {
-            var tasks = await _repository.GetAllAsync();
+            var tasks = await _repository.GetAllAsync(userId);
             return tasks.Select(t => t.ToTaskResponse()).ToList();
         }
 
@@ -32,10 +32,14 @@ namespace Servicies
             return task == null ? null : task.ToTaskResponse();
         }
 
-        public async Task<TaskResponse> CreateTaskAsync(TaskAddRequest taskAddRequest)
+        public async Task<TaskResponse> CreateTaskAsync(TaskAddRequest taskAddRequest, Guid userId)
         {
             taskAddRequest.CreatedAt = DateTime.UtcNow;
-            var task = await _repository.AddAsync(taskAddRequest.ToTaskItem());
+
+            var taskItem = taskAddRequest.ToTaskItem();
+            taskItem.UserId = userId;
+
+            var task = await _repository.AddAsync(taskItem);
             return task.ToTaskResponse();
         }
 
